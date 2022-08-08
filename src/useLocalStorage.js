@@ -10,7 +10,7 @@ export const useLocalStorage = (
     if (valueInLocalStorage) {
       return deserialize(valueInLocalStorage);
     } else {
-      return initialValue;
+      return typeof initialValue === "function" ? initialValue() : initialValue;
     }
   });
   useEffect(() => {
