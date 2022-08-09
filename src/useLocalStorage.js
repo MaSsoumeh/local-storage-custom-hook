@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const useLocalStorage = (
   key,
@@ -13,7 +13,13 @@ export const useLocalStorage = (
       return typeof initialValue === "function" ? initialValue() : initialValue;
     }
   });
+  const prevKeyRef = useRef(key);
   useEffect(() => {
+    const prevKey = prevKeyRef.current;
+    if (prevKey !== key) {
+      window.localStorage.removeItem(prevKey);
+    }
+    prevKeyRef.current = key;
     window.localStorage.setItem(key, serialize(state));
   }, [state, key, serialize]);
   return [state, setState];
