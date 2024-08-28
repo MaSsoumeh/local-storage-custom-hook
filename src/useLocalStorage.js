@@ -13,7 +13,9 @@ export const useLocalStorage = (
       return typeof initialValue === "function" ? initialValue() : initialValue;
     }
   });
+  
   const prevKeyRef = useRef(key);
+  
   useEffect(() => {
     const prevKey = prevKeyRef.current;
     if (prevKey !== key) {
@@ -22,5 +24,6 @@ export const useLocalStorage = (
     prevKeyRef.current = key;
     window.localStorage.setItem(key, serialize(state));
   }, [state, key, serialize]);
+  
   return [state, setState];
 };
